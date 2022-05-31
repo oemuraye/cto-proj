@@ -1,16 +1,26 @@
 // import mongoose from 'mongoose'
 import postModal from '../models/Posts.js'
 
-export const postReading = async (req, res) => {
-  const post = req.query;
-
-  const newPost = new postModal(post);
-
+export const getAllReading = async (req, res) => {
   try {
-    await newPost.save();
-    console.log(post);
+    const readings = await postModal.find();
+
+    res.status(200).json(JSON.stringify(readings));
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+export const postReading = async (req, res) => {
+  try {
+    const post = req.query;
   
-    res.status(201).send("done");
+    if (post.length == null) {
+      return res.status(404).send("No reading was inputed");
+    }
+      const newPost = new postModal(post);
+      await newPost.save();
+      res.status(201).send("done");
+    
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
