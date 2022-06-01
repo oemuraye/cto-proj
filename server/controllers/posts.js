@@ -29,7 +29,7 @@ export const postReading = async (req, res) => {
 
 export const getCurrent = async (req, res) => {
   try {
-    let current = await postModal.find({}, { _id: 0, current: 1, createdAt: 1 });
+    let current = await postModal.find({}, { _id: 0, current: 1 });
 
     res.status(200).send(current);
   } catch (err) {
@@ -38,7 +38,7 @@ export const getCurrent = async (req, res) => {
 }
 export const getvoltage = async (req, res) => {
   try {
-    let voltage = await postModal.find({}, { _id: 0, voltage: 1, createdAt: 1 });
+    let voltage = await postModal.find({}, { _id: 0, voltage: 1 });
 
     res.status(200).send(voltage);
   } catch (err) {
@@ -47,7 +47,7 @@ export const getvoltage = async (req, res) => {
 }
 export const getPower = async (req, res) => {
   try {
-    let power = await postModal.find({}, { _id: 0, power: 1, createdAt: 1 });
+    let power = await postModal.find({}, { _id: 0, power: 1 });
 
     res.status(200).send(power);
   } catch (err) {
