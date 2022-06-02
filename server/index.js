@@ -3,6 +3,10 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import exphbs from "express-handlebars";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import path from "path";
 
 import postRoutes from "./routes/posts.js";
 
@@ -13,9 +17,12 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+app.use(express.static(path.join(__dirname, "/../client")));
+
 app.get('/', (req, res) => {
-  console.log(req.query);
-  res.send("Welcome to CTO App Api");
+  res.sendFile(__dirname + '/../client/index.html');
 });
 
 app.use('/post', postRoutes);
