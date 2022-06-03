@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import exphbs from "express-handlebars";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import path from "path";

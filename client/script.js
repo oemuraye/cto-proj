@@ -1,6 +1,7 @@
 // Chart and Guages Api fetch and rendering
 const url = "http://cto-reading.herokuapp.com/post";
 
+
 // Fetching Current Dataset of Readings
 const fetchCurrentData = async () => {
   try {
@@ -159,8 +160,10 @@ const fetchEnergyData = async () => {
     const response = await fetch(`${url}/energy`);
     const energySet = await response.json();
 
-    const energyDataSet = energySet.map(({ energy }) => energy);
-    const time = energySet.map(({ createdAt }) => createdAt.slice(0, 10));
+    const energyLast30Readings = energySet.slice(-30)
+
+    const energyDataSet = energyLast30Readings.map(({ energy }) => energy);
+    const time = energyLast30Readings.map(({ createdAt }) => createdAt.slice(0, 10));
 
     const energy = { energyDataSet, time };
 
@@ -175,6 +178,7 @@ const fetchEnergyData = async () => {
 const energyGuage = async () => {
   const { energyDataSet } = await fetchEnergyData();
   const energy = energyDataSet[energyDataSet.length - 1];
+
   let data = [
     {
       domain: { x: [0, 1], y: [0, 1] },
@@ -212,6 +216,7 @@ const energyChart = async () => {
   const { energyDataSet, time } = await fetchEnergyData();
 
   const labels = [...time];
+  console.log(time);
 
   const data = {
     labels: labels,
@@ -237,6 +242,18 @@ const energyChart = async () => {
 };
 
 energyChart();
+
+
+// Set Charts and Guage to auto reload 
+setInterval(() => {
+  currentGuage();
+  voltageGuage();
+  powerGuage();
+  energyGuage();
+  // energyChart().destory();
+  // energyChart();  
+}, 5000);
+
 
 // Login Validation and access
 const form = document.getElementById("myForm");
