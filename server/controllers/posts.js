@@ -1,5 +1,6 @@
 // import mongoose from 'mongoose'
 import postModal from '../models/Posts.js'
+import excelJS from 'exceljs'
 
 export const getAllReading = async (req, res) => {
   try {
@@ -61,5 +62,41 @@ export const getEnergy = async (req, res) => {
     res.status(200).send(energy);
   } catch (err) {
     console.error(err);
+  }
+}
+export const getDbExcel = async (req, res) => {
+  const workbook = new excelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Meter Readings');
+  const path = './files';
+  worksheet.columns = [
+    {header: "S no.", key: "s_no", width: 10},
+    {header: "Current", key: "current", width: 10},
+    {header: "Voltage", key: "voltage", width: 10},
+    {header: "Power", key: "power", width: 10},
+    {header: "Energy", key: "energy", width: 10},
+    {header: "Date", key: "createdAt", width: 15},
+  ]
+
+  // looping through the data
+  let conuter = 1;
+  const readings = await postModal.find();
+
+
+ readings.forEach(async (reading) => {
+   reading.s_no = conuter,
+    worksheet.addRow(reading)
+    conuter++;
+  })
+  //  Making first line in excel bold
+  worksheet.getRow(1).font = {bold: true};
+
+  try {
+    const dbExcel = await workbook.xlsx.writeFile(`${path}/meter_readings.xlsx`)
+    res.status(200).download(`${path}/meter_readings.xlsx`); 
+  } catch (error) {
+    res.send({
+      status: "error",
+      message: "Something went wrong" + error.message,
+    })
   }
 }

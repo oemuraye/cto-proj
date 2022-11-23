@@ -1,5 +1,6 @@
 // Chart and Guages Api fetch and rendering
-const url = "http://cto-reading.herokuapp.com/post";
+const url = "/post";
+// const url = "http://cto-reading.herokuapp.com/post";
 
 
 // Fetching Current Dataset of Readings
@@ -216,7 +217,6 @@ const energyChart = async () => {
   const { energyDataSet, time } = await fetchEnergyData();
 
   const labels = [...time];
-  console.log(time);
 
   const data = {
     labels: labels,
@@ -238,10 +238,14 @@ const energyChart = async () => {
 
   const ctx = document.getElementById("energy-chart");
   const myChart = new Chart(ctx, config);
+  
   return myChart;
 };
 
 energyChart();
+setInterval(() => {
+  
+}, 5000);
 
 
 // Set Charts and Guage to auto reload 
@@ -250,7 +254,7 @@ setInterval(() => {
   voltageGuage();
   powerGuage();
   energyGuage();
-  // energyChart().destory();
+  // energyChart().clear();
   // energyChart();  
 }, 5000);
 
